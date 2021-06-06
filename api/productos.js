@@ -3,18 +3,54 @@ class Productos {
       this.lista = [],
       this.count = 1
   }
-  getProductById(id){
-    var result = this.lista.filter(a => a.id == id);
-    return result
+  enlistar(){
+    if(this.lista.length > 0){
+      return this.lista;
+    }else{
+      return "no se encontraron productos";
+    }
   }
-  identificador(producto){
-    var productoIdentificado = producto.id = this.count;
+  showProductById(id){
+    var index = this.lista.findIndex(a => a.id == id);
+    if(index != -1){
+      var result = this.lista.filter(a => a.id == id);
+      return result
+    }else{
+      return "no se encontro el producto";
+    }
+  }
+  guardar(producto){
+    let nuevoProducto = producto
+    nuevoProducto.id = this.count;
     this.count++;
-    return producto
+    this.lista.push(nuevoProducto);
+    return nuevoProducto
   }
+  actualizar(id,info){
+    var index = this.lista.findIndex(a => a.id == id);
 
-  // agregar los metodos requeridos
+    if(index != -1){
+      var {title,price,thumbnail} = info;
+      this.lista[index].title = title;
+      this.lista[index].price = price;
+      this.lista[index].thumbnail = thumbnail;
+      return this.lista[index];
+    }else{
+      return "no se encontro producto para actualizar";
+    }
+  }
+  borrar(id){
+    var productoBorrado = this.lista.filter(a => a.id == id);
+    var index = this.lista.findIndex(a => a.id == id);
+
+    if(index != -1){
+      this.lista.splice(index,1);
+      return productoBorrado
+    }else{
+      return "no se encontro producto para borrar";
+    }
+  }
 }
 
-// exporto una instancia de la clase
+
 module.exports = new Productos();

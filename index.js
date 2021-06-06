@@ -1,27 +1,20 @@
 const express = require('express');
-const productos =  require('./api/productos');
 
 const app = express();
+
+//const router = express.Router();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
-app.get('/api/prodcutos/listar',(req,res)=>{
-  res.send(productos.lista)
+app.get('/',(req,res)=>{
+  res.sendFile("index.html");
 });
 
-app.get('/api/prodcutos/listar/:id',(req,res)=>{
-  let producto = productos.getProductById(req.params.id);
-  res.send(producto);
-});
-  
-app.post('/api/prodcutos/guardar',(req,res)=>{
-  let nuevoProducto = productos.identificador(req.body)
-  console.log(nuevoProducto);
-  productos.lista.push(nuevoProducto)
-  res.send(req.body)
-});
+const router = require('./router/routes');
 
-
+app.use("/api/productos",router);
 const puerto = 8080;
 const server = app.listen(puerto,()=>{
   console.log(`servidor escuchando en http://localhost:${puerto}`);
